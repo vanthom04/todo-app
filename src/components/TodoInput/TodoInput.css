@@ -1,0 +1,39 @@
+.todo-input {
+  position: relative;
+  width: 100%;
+  padding: 20px 0px;
+  border-bottom: 1px solid #c8c9ca;
+}
+
+.todo-input input {
+  width: 100%;
+  outline: none;
+  border: none;
+  padding: 24px 20px;
+  font-size: 18px;
+  border-radius: 8px;
+  color: #757575;
+  box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.todo-input button {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  outline: none;
+  border: none;
+  background-color: #1266f1;
+  padding: 8px 16px;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: transform 0.25s;
+  box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.todo-input button:active {
+  transform: translateY(-50%) scale(0.95);
+}

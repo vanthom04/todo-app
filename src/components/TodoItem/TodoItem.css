@@ -1,0 +1,60 @@
+.todo-item {
+  display: flex;
+  width: 100%;
+  padding: 12px;
+  /* background-color: aqua; */
+}
+
+.todo-item .view {
+  position: relative;
+  width: 100%;
+}
+
+.todo-item .view label {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 18px;
+}
+
+.todo-item .view .edit {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  display: none;
+  font-size: 18px;
+  width: 100%;
+  outline: none;
+  border: none;
+  border-radius: 3px;
+  padding: 6px;
+  /* background-color: rgba(0, 0, 0, 0.1); */
+}
+
+.todo-item .more {
+  min-width: 130px;
+  line-height: 19px;
+  text-align: right;
+}
+
+.todo-item .more .edit button {
+  outline: none;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.todo-item .more .created-at {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.todo-item .more .created-at p {
+  font-size: 14px;
+  margin-left: 6px;
+  color: #757575;
+}
+
