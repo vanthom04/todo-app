@@ -9,6 +9,7 @@ function InputTodo() {
     <form className="todo-input" onSubmit={handleSubmit}>
       <input
         type="text"
+        name="todo"
         placeholder="Enter todo..."
       />
       <button type="submit">
