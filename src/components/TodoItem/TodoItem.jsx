@@ -7,7 +7,7 @@ function TodoItem() {
   return (
     <div className="todo-item">
       <div className="view">
-        <label>Buy groceries for next week</label>
+        <span>Buy groceries for next week</span>
         <input
           className="edit"
           type="text"

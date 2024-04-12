@@ -10,7 +10,7 @@
   width: 100%;
 }
 
-.todo-item .view label {
+.todo-item .view span {
   position: absolute;
   left: 0;
   top: 50%;
