@@ -3,11 +3,11 @@ import { FaInfoCircle } from 'react-icons/fa'
 import { FaTrashAlt } from 'react-icons/fa'
 import './TodoItem.css'
 
-function TodoItem() {
+function TodoItem({ todo }) {
   return (
     <div className="todo-item">
       <div className="view">
-        <span>Buy groceries for next week</span>
+        <span>{todo.task}</span>
         <input
           className="edit"
           type="text"
