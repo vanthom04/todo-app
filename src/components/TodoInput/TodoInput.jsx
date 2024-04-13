@@ -12,7 +12,7 @@ function TodoInput({ onFetchData }) {
   const handleSubmit = async (e) => {
     e.preventDefault()
     if (!task) {
-      toast.error('Please! enter task for you')
+      return toast.error('Please! enter your tasks')
     }
     const { error } = await supabase.from('my_todo').insert({ task: task })
     if (error) {
