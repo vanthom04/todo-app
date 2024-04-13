@@ -53,12 +53,13 @@ function TodoItem({ todo, onFetchData }) {
     }
   }
 
-  const handleDeleteTodo = async (id) => {
-    const { error } = await supabase.from('my_todo').delete().eq('id', id)
+  const handleDeleteTodo = async () => {
+    const { error } = await supabase.from('my_todo').delete().eq('id', todo.id)
     if (error) {
       toast.error('Delete task failed!')
     }
     toast.success('Delete task successfully!')
+    onFetchData()
   }
 
   return (
@@ -91,7 +92,7 @@ function TodoItem({ todo, onFetchData }) {
             <MdOutlineEdit size={18} color="#38c0ed" />
           </button>
           <button
-            onClick={() => handleDeleteTodo(todo.id)}
+            onClick={handleDeleteTodo}
           >
             <FaTrashAlt size={16} color="#f93154" />
           </button>
