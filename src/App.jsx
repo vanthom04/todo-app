@@ -23,7 +23,7 @@ function App() {
 
   return (
     <div className="wrapper">
-      <header className="header">
+      <header>
         <h1>My Todo</h1>
         <TodoInput onFetchData={fetchTodoList}/>
       </header>
