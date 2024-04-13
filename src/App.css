@@ -23,7 +23,7 @@ html *::-webkit-scrollbar-track {
 
 body {
   font-family: 'Roboto', sans-serif;
-  font-size: 1.6rem;
+  font-size: 16px;
   line-height: 1.5;
   text-rendering: optimizeSpeed;
   background-color: var(--black-color);
@@ -44,6 +44,7 @@ body {
   padding: 30px;
   overflow: hidden;
   display: grid;
+  grid-template-rows: 2fr 3fr;
 }
 
 .header {

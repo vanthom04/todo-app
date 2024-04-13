@@ -1,8 +1,7 @@
 .todo-item {
   display: flex;
   width: 100%;
-  padding: 12px;
-  /* background-color: aqua; */
+  padding: 4px;
 }
 
 .todo-item .view {
@@ -16,6 +15,7 @@
   top: 50%;
   transform: translateY(-50%);
   font-size: 18px;
+  padding: 6px;
 }
 
 .todo-item .view .edit {
@@ -30,7 +30,6 @@
   border: none;
   border-radius: 3px;
   padding: 6px;
-  /* background-color: rgba(0, 0, 0, 0.1); */
 }
 
 .todo-item .more {

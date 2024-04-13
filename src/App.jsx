@@ -8,9 +8,10 @@ function App() {
   const [todoList, setTodoList] = useState([])
 
   const fetchTodoList = async () => {
-    const { data, error } = await supabase.from('my_todo').select('*')
+    const { data, error } = await supabase.from('my_todo').select('*').order('created_at')
+
     if (error) {
-      console.log('Error fetching todo list', error.message)
+      console.log('Error fetching todo list: ', error.message)
     } else {
       setTodoList(data)
     }
@@ -26,11 +27,12 @@ function App() {
         <h1>My Todo</h1>
         <TodoInput />
       </header>
-      <main className="main">
+      <main>
         {todoList.map((todo) => (
           <TodoItem
             key={todo.id}
             todo={todo}
+            onFetchData={fetchTodoList}
           />
         ))}
       </main>
