@@ -4,6 +4,8 @@ import { useState, useRef } from 'react'
 import { MdOutlineEdit } from 'react-icons/md'
 import { FaInfoCircle } from 'react-icons/fa'
 import { FaTrashAlt } from 'react-icons/fa'
+import Button from 'react-bootstrap/Button'
+import Modal from 'react-bootstrap/Modal'
 import { supabase } from '~/config/supabase'
 import './TodoItem.css'
 
@@ -12,6 +14,10 @@ const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', '
 function TodoItem({ todo, onFetchData }) {
   const [value, setValue] = useState('')
   const [isEdit, setIdEdit] = useState(false)
+  const [show, setShow] = useState(false)
+
+  const handleClose = () => setShow(false)
+  const handleShow = () => setShow(true)
 
   const editRef = useRef(null)
   const timeoutRef = useRef(null)
@@ -63,52 +69,73 @@ function TodoItem({ todo, onFetchData }) {
   }
 
   return (
-    <div className="todo-item">
-      <div className="view">
-        <span
-          style={{ display: isEdit ? 'none' : 'block' }}
-        >
-          {todo.task}
-        </span>
-        <input
-          ref={editRef}
-          className="edit"
-          style={{ display: isEdit ? 'block' : 'none' }}
-          type="text"
-          value={value}
-          spellCheck="false"
-          autoComplete="off"
-          onChange={(e) => setValue(e.target.value)}
-          onBlur={handleBlur}
-          onKeyUp={handleKeyUp}
-        />
-      </div>
-      <div className="more">
-        <div className="edit">
-          <button
-            style={{ marginRight: 12 }}
-            onClick={handleEditTodo}
+    <>
+      <div className="todo-item">
+        <div className="view">
+          <span
+            style={{ display: isEdit ? 'none' : 'block' }}
           >
-            <MdOutlineEdit size={18} color="#38c0ed" />
-          </button>
-          <button
-            onClick={handleDeleteTodo}
-          >
-            <FaTrashAlt size={16} color="#f93154" />
-          </button>
-        </div>
-        <div className="created-at">
-          <span>
-            <FaInfoCircle size={16} color="757575" />
+            {todo.task}
           </span>
-          <p>
-            {`${new Date(todo.created_at).getDate()} 
-            ${months[new Date(todo.created_at).getMonth()]} 
-            ${new Date(todo.created_at).getFullYear()}`}
-          </p>
+          <input
+            ref={editRef}
+            className="edit"
+            style={{ display: isEdit ? 'block' : 'none' }}
+            type="text"
+            value={value}
+            spellCheck="false"
+            autoComplete="off"
+            onChange={(e) => setValue(e.target.value)}
+            onBlur={handleBlur}
+            onKeyUp={handleKeyUp}
+          />
+        </div>
+        <div className="more">
+          <div className="edit">
+            <button
+              style={{ marginRight: 12 }}
+              onClick={handleEditTodo}
+            >
+              <MdOutlineEdit size={18} color="#38c0ed" />
+            </button>
+            <button
+              onClick={handleShow}
+            >
+              <FaTrashAlt size={16} color="#f93154" />
+            </button>
+          </div>
+          <div className="created-at">
+            <span>
+              <FaInfoCircle size={16} color="757575" />
+            </span>
+            <p>
+              {`${new Date(todo.created_at).getDate()} 
+              ${months[new Date(todo.created_at).getMonth()]} 
+              ${new Date(todo.created_at).getFullYear()}`}
+            </p>
+          </div>
         </div>
       </div>
-    </div>
+      <Modal
+        show={show}
+        onHide={handleClose}
+        backdrop="static"
+        keyboard={false}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Confirm delete</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          Are you sure confirm delete task todo?
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Cancel
+          </Button>
+          <Button variant="primary" onClick={handleDeleteTodo}>Delete</Button>
+        </Modal.Footer>
+      </Modal>
+    </>
   )
 }
 
