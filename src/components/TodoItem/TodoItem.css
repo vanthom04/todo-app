@@ -34,7 +34,6 @@
 
 .todo-item .more {
   min-width: 130px;
-  line-height: 19px;
   text-align: right;
 }
 
@@ -53,7 +52,7 @@
 
 .todo-item .more .created-at p {
   font-size: 14px;
-  margin-left: 6px;
+  margin: 0px 0px 0px 6px;
   color: #757575;
 }
 

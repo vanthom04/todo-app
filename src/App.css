@@ -22,7 +22,7 @@ html *::-webkit-scrollbar-track {
 }
 
 body {
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Roboto', sans-serif !important;
   font-size: 16px;
   line-height: 1.5;
   text-rendering: optimizeSpeed;
@@ -57,6 +57,7 @@ body {
 .header h1 {
   color: #0e64f1;
   font-size: 42px;
+  font-weight: 700;
 }
 
 .wrapper main {

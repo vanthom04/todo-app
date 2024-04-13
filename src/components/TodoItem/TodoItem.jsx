@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 import toast from 'react-hot-toast'
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { MdOutlineEdit } from 'react-icons/md'
 import { FaInfoCircle } from 'react-icons/fa'
 import { FaTrashAlt } from 'react-icons/fa'
@@ -20,23 +20,16 @@ function TodoItem({ todo, onFetchData }) {
   const handleShow = () => setShow(true)
 
   const editRef = useRef(null)
-  const timeoutRef = useRef(null)
+  const btnEditRef = useRef(null)
 
-  const handleEditTodo = () => {
-    setIdEdit(!isEdit)
+  const handleEditTodo = () => setIdEdit(!isEdit)
 
-    if (!isEdit) {
+  useEffect(() => {
+    if (isEdit) {
       setValue(todo.task)
-
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current)
-      }
-
-      timeoutRef.current = setTimeout(() => {
-        editRef.current?.focus()
-      }, 0)
+      editRef.current.focus()
     }
-  }
+  }, [isEdit, todo.task])
 
   const handleBlur = () => {
     setIdEdit(false)
@@ -64,6 +57,7 @@ function TodoItem({ todo, onFetchData }) {
     if (error) {
       toast.error('Delete task failed!')
     }
+
     toast.success('Delete task successfully!')
     onFetchData()
   }
@@ -93,6 +87,7 @@ function TodoItem({ todo, onFetchData }) {
         <div className="more">
           <div className="edit">
             <button
+              ref={btnEditRef}
               style={{ marginRight: 12 }}
               onClick={handleEditTodo}
             >
