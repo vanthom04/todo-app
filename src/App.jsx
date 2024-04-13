@@ -25,7 +25,7 @@ function App() {
     <div className="wrapper">
       <header className="header">
         <h1>My Todo</h1>
-        <TodoInput />
+        <TodoInput onFetchData={fetchTodoList}/>
       </header>
       <main>
         {todoList.map((todo) => (
