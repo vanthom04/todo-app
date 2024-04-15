@@ -1,27 +1,29 @@
 import PropTypes from 'prop-types'
-import toast from 'react-hot-toast'
 import { useState, useRef, useEffect } from 'react'
 import { MdOutlineEdit } from 'react-icons/md'
 import { FaInfoCircle } from 'react-icons/fa'
 import { FaTrashAlt } from 'react-icons/fa'
 import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal'
+import toast from 'react-hot-toast'
+import { useTodo, actions } from '~/context'
 import { supabase } from '~/config/supabase'
 import './TodoItem.css'
 
 const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
-function TodoItem({ todo, onFetchData }) {
+function TodoItem({ todo }) {
   const [value, setValue] = useState('')
   const [isEdit, setIdEdit] = useState(false)
   const [show, setShow] = useState(false)
-
-  const handleClose = () => setShow(false)
-  const handleShow = () => setShow(true)
+  const [, dispatch] = useTodo()
 
   const editRef = useRef(null)
   const btnEditRef = useRef(null)
 
+  const handleClose = () => setShow(false)
+  const handleShow = () => setShow(true)
+  const handleBlur = () => setIdEdit(false)
   const handleEditTodo = () => setIdEdit(!isEdit)
 
   useEffect(() => {
@@ -30,10 +32,6 @@ function TodoItem({ todo, onFetchData }) {
       editRef.current.focus()
     }
   }, [isEdit, todo.task])
-
-  const handleBlur = () => {
-    setIdEdit(false)
-  }
 
   const handleKeyUp = async (e) => {
     if (e.keyCode === 13) {
@@ -46,29 +44,31 @@ function TodoItem({ todo, onFetchData }) {
         return toast.error('Updated task failed!')
       }
 
+      dispatch(actions.editTodo({ id: todo.id, task: value }))
       toast.success('Updated task successfully!')
       setIdEdit(false)
-      onFetchData()
     }
   }
 
   const handleDeleteTodo = async () => {
-    const { error } = await supabase.from('my_todo').delete().eq('id', todo.id)
+    const { error } = await supabase
+      .from('my_todo')
+      .delete()
+      .eq('id', todo.id)
+
     if (error) {
       toast.error('Delete task failed!')
     }
 
+    dispatch(actions.removeTodo(todo.id))
     toast.success('Delete task successfully!')
-    onFetchData()
   }
 
   return (
     <>
       <div className="todo-item">
         <div className="view">
-          <span
-            style={{ display: isEdit ? 'none' : 'block' }}
-          >
+          <span style={{ display: isEdit ? 'none' : 'block' }}>
             {todo.task}
           </span>
           <input
@@ -93,9 +93,7 @@ function TodoItem({ todo, onFetchData }) {
             >
               <MdOutlineEdit size={18} color="#38c0ed" />
             </button>
-            <button
-              onClick={handleShow}
-            >
+            <button onClick={handleShow}>
               <FaTrashAlt size={16} color="#f93154" />
             </button>
           </div>
@@ -124,10 +122,18 @@ function TodoItem({ todo, onFetchData }) {
           Are you sure confirm delete task todo?
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
+          <Button
+            variant="secondary"
+            onClick={handleClose}
+          >
             Cancel
           </Button>
-          <Button variant="primary" onClick={handleDeleteTodo}>Delete</Button>
+          <Button
+            variant="primary"
+            onClick={handleDeleteTodo}
+          >
+            Delete
+          </Button>
         </Modal.Footer>
       </Modal>
     </>
@@ -135,8 +141,7 @@ function TodoItem({ todo, onFetchData }) {
 }
 
 TodoItem.propTypes = {
-  todo: PropTypes.object.isRequired,
-  onFetchData: PropTypes.func
+  todo: PropTypes.object.isRequired
 }
 
 export default TodoItem

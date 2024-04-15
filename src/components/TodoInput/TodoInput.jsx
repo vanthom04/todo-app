@@ -1,28 +1,34 @@
-import PropTypes from 'prop-types'
 import { useState, useRef } from 'react'
 import toast from 'react-hot-toast'
+import { useTodo, actions } from '~/context'
 import { supabase } from '~/config/supabase'
 import './TodoInput.css'
 
-function TodoInput({ onFetchData }) {
+function TodoInput() {
   const [task, setTask] = useState('')
+  const [state, dispatch] = useTodo()
 
   const inputRef = useRef(null)
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     if (!task) {
-      return toast.error('Please! enter your task')
+      return toast.error('No task!')
     }
-    const { error } = await supabase.from('my_todo').insert({ task: task })
+
+    const { error } = await supabase.from('my_todo').insert({ task })
     if (error) {
-      toast.error('Add task failure')
-    } else {
-      toast.success('Add task successfully')
-      onFetchData()
-      setTask('')
-      inputRef.current.focus()
+      return toast.error('Add task failed!')
     }
+
+    toast.success('Add task successfully!')
+    dispatch(actions.addTodo({
+      id: state.todoList[state.todoList.length - 1].id + 1,
+      task,
+      created_at: Date.now()
+    }))
+    setTask('')
+    inputRef.current?.focus()
   }
 
   return (
@@ -31,20 +37,16 @@ function TodoInput({ onFetchData }) {
         ref={inputRef}
         type="text"
         value={task}
-        onChange={(e) => setTask(e.target.value)}
         placeholder="Enter todo..."
         autoComplete="off"
         spellCheck="false"
+        onChange={(e) => setTask(e.target.value)}
       />
       <button type="submit">
         ADD
       </button>
     </form>
   )
-}
-
-TodoInput.propTypes = {
-  onFetchData: PropTypes.func
 }
 
 export default TodoInput
