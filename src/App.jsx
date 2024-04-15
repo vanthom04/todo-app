@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
-import { supabase } from './config/supabase'
-import TodoInput from './components/TodoInput'
-import TodoItem from './components/TodoItem'
+import { supabase } from '~/config/supabase'
+import TodoInput from '~/components/TodoInput'
+import TodoItem from '~/components/TodoItem'
 import './App.css'
 
 function App() {
