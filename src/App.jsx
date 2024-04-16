@@ -20,7 +20,6 @@ function App() {
       } else {
         dispatch(actions.getTodoList(data))
       }
-      console.log('re-render App.jsx')
     }
 
     fetchTodoList()
