@@ -1,15 +1,14 @@
-import React from 'react'
+import React, { Suspense } from 'react'
 import ReactDOM from 'react-dom/client'
-import { Toaster } from 'react-hot-toast'
-import { TodoProvider } from '~/context'
+import { BrowserRouter } from 'react-router-dom'
 import App from '~/App.jsx'
-import 'bootstrap/dist/css/bootstrap.css'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <TodoProvider>
-      <App />
-      <Toaster position="top-center" />
-    </TodoProvider>
+    <BrowserRouter>
+      <Suspense>
+        <App />
+      </Suspense>
+    </BrowserRouter>
   </React.StrictMode>
 )

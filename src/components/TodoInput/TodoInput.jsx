@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react'
 import toast from 'react-hot-toast'
+
 import { useTodo, actions } from '~/context'
 import { supabase } from '~/config/supabase'
 import './TodoInput.css'

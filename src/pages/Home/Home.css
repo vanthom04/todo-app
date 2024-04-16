@@ -1,0 +1,31 @@
+
+.wrapper {
+  width: 850px;
+  height: 500px;
+  background-color: #eff1f2;
+  border-radius: 16px;
+  padding: 30px;
+  overflow: hidden;
+  display: grid;
+  grid-template-rows: 2fr 3fr;
+}
+
+.wrapper header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.wrapper header h1 {
+  font-size: 42px;
+  font-weight: 700;
+  color: #0e64f1;
+}
+
+.wrapper main {
+  margin-top: 12px;
+  width: 100%;
+  height: 100%;
+  overflow-y: overlay;
+}

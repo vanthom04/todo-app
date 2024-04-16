@@ -6,6 +6,7 @@ import { FaTrashAlt } from 'react-icons/fa'
 import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal'
 import toast from 'react-hot-toast'
+
 import { useTodo, actions } from '~/context'
 import { supabase } from '~/config/supabase'
 import './TodoItem.css'
