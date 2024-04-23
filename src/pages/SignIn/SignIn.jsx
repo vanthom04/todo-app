@@ -1,21 +1,41 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import toast from 'react-hot-toast'
 import { Link } from 'react-router-dom'
-import { FaRegEye } from 'react-icons/fa'
-import { FaRegEyeSlash } from 'react-icons/fa'
+import { IoEyeOutline } from 'react-icons/io5'
+import { IoEyeOffOutline } from 'react-icons/io5'
 
+import config from '~/config'
+import { useRouter } from '~/hooks'
 import { checkEmail } from '~/utils/constants'
 import { supabase } from '~/config/supabase'
-import './Login.css'
+import './SignIn.css'
 
-function Login() {
+function SignIn() {
   const [show, setShow] = useState(false)
+  const [loading, setLoading] = useState(false)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
-  const Icon = show ? FaRegEye : FaRegEyeSlash
+  const router = useRouter()
 
-  const handleLoginSubmit = async (e) => {
+  const Icon = show ? IoEyeOffOutline : IoEyeOutline
+
+  useEffect(() => {
+    const checkUser = async () => {
+      const { data: { session }, error } = await supabase.auth.getSession()
+      if (error) {
+        throw new Error(error)
+      }
+
+      if (session) {
+        router.replace(config.routes.home)
+      }
+    }
+
+    checkUser()
+  }, [router])
+
+  const handleSignIn = async (e) => {
     e.preventDefault()
     if (!email || !password) {
       return toast.error('Please enter your info!')
@@ -25,32 +45,36 @@ function Login() {
     }
 
     try {
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password
-      })
-
+      setLoading(true)
+      const { data, error } = await supabase.auth.signInWithPassword({ email, password })
       if (error) throw error
 
-      console.log(data)
+      if (data.user) {
+        toast.success('Login successfully!')
+        router.replace(config.routes.home)
+      }
     } catch (error) {
+      toast.error(error.message)
       throw new Error(error)
+    } finally {
+      setLoading(false)
     }
   }
 
   return (
-    <div className="login">
-      <h1>Login</h1>
-      <form onSubmit={handleLoginSubmit}>
+    <div className="sign-in">
+      <h1>Sign In</h1>
+      <form onSubmit={handleSignIn}>
         <div className="form-group">
           <label htmlFor="email">Email</label>
           <input
             id="email"
-            type="text"
+            type="email"
             value={email}
             autoComplete="off"
             spellCheck="false"
             placeholder="Enter your email..."
+            disabled={loading}
             onChange={(e) => setEmail(e.target.value)}
           />
         </div>
@@ -64,6 +88,7 @@ function Login() {
               autoComplete="off"
               spellCheck="false"
               placeholder="Enter your password..."
+              disabled={loading}
               onChange={(e) => setPassword(e.target.value)}
             />
             <Icon
@@ -73,13 +98,23 @@ function Login() {
             />
           </span>
         </div>
-        <button type="submit">
-          Login
+        <button
+          type="submit"
+          disabled={loading}
+        >
+          {loading ? (
+            <span className="spinner-border spinner-border-sm" role="status"></span>
+          ) : (
+            <span>Sign In</span>
+          )}
         </button>
-        <p>Already have an account? <Link to="/register">Register</Link></p>
+        <p>
+          Don&apos;t have an account?
+          <Link to={config.routes.signUp}>Sign Up</Link>
+        </p>
       </form>
     </div>
   )
 }
 
-export default Login
+export default SignIn

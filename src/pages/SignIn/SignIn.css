@@ -1,27 +1,27 @@
-.register {
+.sign-in {
   user-select: none;
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 480px;
-  height: 450px;
+  height: 380px;
   background-color: #eff1f2;
   padding: 24px;
   border-radius: 6px;
 }
 
-.register h1 {
-  font-size: 42px;
-  font-weight: 700;
+.sign-in h1 {
+  font-size: 38px;
+  font-weight: 500;
   color: #0e64f1;
 }
 
-.register form {
+.sign-in form {
   width: 100%;
   margin-top: 4px;
 }
 
-.register form .form-group {
+.sign-in form .form-group {
   display: flex;
   flex-direction: column;
 }
@@ -30,12 +30,12 @@
   margin-top: 12px;
 }
 
-.register form .form-group label {
+.sign-in form .form-group label {
   font-size: 17px;
   margin-bottom: 2px;
 }
 
-.register form .form-group input {
+.sign-in form .form-group input {
   flex: 1;
   width: 100%;
   outline: none;
@@ -45,12 +45,12 @@
   font-size: 16px;
 }
 
-.register form .form-group span {
+.sign-in form .form-group span {
   width: 100%;
   position: relative;
 }
 
-.register form .form-group .show {
+.sign-in form .form-group .show {
   position: absolute;
   right: 8px;
   top: 50%;
@@ -58,11 +58,14 @@
   cursor: pointer;
 }
 
-.register form button {
+.sign-in form button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 100%;
+  height: 42px;
   outline: none;
   border: none;
-  padding: 8px;
   margin: 16px 0px;
   background-color: #0e64f1;
   color: #fff;
@@ -73,12 +76,16 @@
   cursor: pointer;
 }
 
-.register form button:active {
+.sign-in form button:active {
   transform: scale(0.98);
 }
 
-.register form p {
+.sign-in form p {
   text-align: center;
   font-size: 15px;
   margin-top: 12px;
+}
+
+.sign-in form p a {
+  margin-left: 4px;
 }

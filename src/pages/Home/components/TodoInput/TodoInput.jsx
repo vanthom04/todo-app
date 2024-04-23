@@ -1,8 +1,9 @@
 import { useState, useRef } from 'react'
 import toast from 'react-hot-toast'
+import { v4 as uuidV4 } from 'uuid'
 
 import { useTodo, actions } from '~/context'
-import { supabase } from '~/config/supabase'
+import { supabase, TABLE_NAME } from '~/config/supabase'
 import './TodoInput.css'
 
 function TodoInput() {
@@ -17,19 +18,25 @@ function TodoInput() {
       return toast.error('No task!')
     }
 
-    const { error } = await supabase.from('my_todo').insert({ task })
-    if (error) {
-      return toast.error('Add task failed!')
-    }
+    try {
+      const { error } = await supabase.from(TABLE_NAME).insert({
+        task: task.trim(),
+        user_id: state?.user?.sub
+      })
+      if (error) throw error
 
-    toast.success('Add task successfully!')
-    dispatch(actions.addTodo({
-      id: state.todoList[state.todoList.length - 1].id + 1,
-      task,
-      created_at: Date.now()
-    }))
-    setTask('')
-    inputRef.current?.focus()
+      toast.success('Add task successfully!')
+      dispatch(actions.addTodo({
+        id: uuidV4(),
+        task,
+        created_at: Date.now()
+      }))
+      setTask('')
+      inputRef.current?.focus()
+    } catch (error) {
+      toast.error(error.message)
+      throw new Error(error)
+    }
   }
 
   return (

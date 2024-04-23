@@ -1,4 +1,9 @@
-import { GET_TODO_LIST, ADD_TODO, EDIT_TODO, REMOVE_TODO } from './constants'
+import { GET_USER, GET_TODO_LIST, ADD_TODO, EDIT_TODO, REMOVE_TODO } from './constants'
+
+export const getUser = (payload) => ({
+  type: GET_USER,
+  payload
+})
 
 export const getTodoList = (payload) => ({
   type: GET_TODO_LIST,

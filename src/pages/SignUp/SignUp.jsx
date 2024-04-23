@@ -1,22 +1,42 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 import { Link } from 'react-router-dom'
-import { FaRegEye } from 'react-icons/fa'
-import { FaRegEyeSlash } from 'react-icons/fa'
+import { IoEyeOutline } from 'react-icons/io5'
+import { IoEyeOffOutline } from 'react-icons/io5'
 
+import config from '~/config'
+import { useRouter } from '~/hooks'
 import { checkEmail } from '~/utils/constants'
 import { supabase } from '~/config/supabase'
-import './Register.css'
+import './SignUp.css'
 
-function Register() {
+function SignUp() {
   const [show, setShow] = useState(false)
-  const [fullName, setFullName] = useState('')
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [fullName, setFullName] = useState('Chu Văn Thơm')
+  const [email, setEmail] = useState('vanthom2210@gmail.com')
+  const [password, setPassword] = useState('123456')
 
-  const Icon = show ? FaRegEye : FaRegEyeSlash
+  const router = useRouter()
 
-  const handleRegisterSubmit = async (e) => {
+  const Icon = show ? IoEyeOffOutline : IoEyeOutline
+
+  useEffect(() => {
+    const checkUser = async () => {
+      const { data: { session }, error } = await supabase.auth.getSession()
+      if (error) {
+        throw new Error(error)
+      }
+
+      if (session) {
+        router.replace(config.routes.home)
+      }
+    }
+
+    checkUser()
+  }, [router])
+
+  const handleSignUp = async (e) => {
     e.preventDefault()
     if (!fullName || !email || !password) {
       return toast.error('Please enter your info!')
@@ -26,28 +46,32 @@ function Register() {
     }
 
     try {
-      const { data, error } = await supabase.auth.signUp({
+      setLoading(true)
+      const { data: { user }, error } = await supabase.auth.signUp({
         email,
         password,
         options: {
-          data: {
-            full_name: fullName
-          }
+          data: { full_name: fullName }
         }
       })
-
       if (error) throw error
 
-      console.log(data)
+      if (user) {
+        toast.success('Registration successful, please check your email and log in again!')
+        router.push(config.routes.signIn)
+      }
     } catch (error) {
+      toast.error(error.message)
       throw new Error(error)
+    } finally {
+      setLoading(false)
     }
   }
 
   return (
-    <div className="register">
-      <h1>Register</h1>
-      <form onSubmit={handleRegisterSubmit}>
+    <div className="sign-up">
+      <h1>Sign Up</h1>
+      <form onSubmit={handleSignUp}>
         <div className="form-group">
           <label htmlFor="fullName">Name</label>
           <input
@@ -57,6 +81,7 @@ function Register() {
             autoComplete="off"
             spellCheck="false"
             placeholder="Enter your name..."
+            disabled={loading}
             onChange={(e) => setFullName(e.target.value)}
           />
         </div>
@@ -64,11 +89,12 @@ function Register() {
           <label htmlFor="email">Email</label>
           <input
             id="email"
-            type="text"
+            type="email"
             value={email}
             autoComplete="off"
             spellCheck="false"
             placeholder="Enter your email..."
+            disabled={loading}
             onChange={(e) => setEmail(e.target.value)}
           />
         </div>
@@ -82,6 +108,7 @@ function Register() {
               autoComplete="off"
               spellCheck="false"
               placeholder="Enter your password..."
+              disabled={loading}
               onChange={(e) => setPassword(e.target.value)}
             />
             <Icon
@@ -91,13 +118,23 @@ function Register() {
             />
           </span>
         </div>
-        <button type="submit">
-          Login
+        <button
+          type="submit"
+          disabled={loading}
+        >
+          {loading ? (
+            <span className="spinner-border spinner-border-sm" role="status"></span>
+          ) : (
+            <span>Sign In</span>
+          )}
         </button>
-        <p>Don&apos;t have an account? <Link to="/login">Register</Link></p>
+        <p>
+          Already have an account?
+          <Link to={config.routes.signIn}>Sign In</Link>
+        </p>
       </form>
     </div>
   )
 }
 
-export default Register
+export default SignUp

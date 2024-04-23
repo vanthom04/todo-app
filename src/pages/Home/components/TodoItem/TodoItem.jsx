@@ -8,7 +8,7 @@ import Modal from 'react-bootstrap/Modal'
 import toast from 'react-hot-toast'
 
 import { useTodo, actions } from '~/context'
-import { supabase } from '~/config/supabase'
+import { supabase, TABLE_NAME } from '~/config/supabase'
 import './TodoItem.css'
 
 const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
@@ -36,33 +36,39 @@ function TodoItem({ todo }) {
 
   const handleKeyUp = async (e) => {
     if (e.keyCode === 13) {
-      const { error } = await supabase
-        .from('my_todo')
-        .update({ task: value.trim() })
-        .eq('id', todo.id)
+      try {
+        const { error } = await supabase
+          .from(TABLE_NAME)
+          .update({ task: value.trim() })
+          .eq('id', todo.id)
 
-      if (error) {
-        return toast.error('Updated task failed!')
+        if (error) throw error
+
+        dispatch(actions.editTodo({ id: todo.id, task: value.trim() }))
+        toast.success('Updated task successfully!')
+        setIdEdit(false)
+      } catch (error) {
+        toast.error('Updated task failed!')
+        throw new Error(error)
       }
-
-      dispatch(actions.editTodo({ id: todo.id, task: value }))
-      toast.success('Updated task successfully!')
-      setIdEdit(false)
     }
   }
 
   const handleDeleteTodo = async () => {
-    const { error } = await supabase
-      .from('my_todo')
-      .delete()
-      .eq('id', todo.id)
+    try {
+      const { error } = await supabase
+        .from(TABLE_NAME)
+        .delete()
+        .eq('id', todo.id)
 
-    if (error) {
+      if (error) throw error
+
+      dispatch(actions.removeTodo(todo.id))
+      toast.success('Delete task successfully!')
+    } catch (error) {
       toast.error('Delete task failed!')
+      throw new Error(error)
     }
-
-    dispatch(actions.removeTodo(todo.id))
-    toast.success('Delete task successfully!')
   }
 
   return (
