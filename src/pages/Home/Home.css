@@ -1,0 +1,72 @@
+.user {
+  position: fixed;
+  right: 12px;
+  top: 12px;
+  display: flex;
+  flex-direction: column;
+}
+
+.user h3 {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.user button {
+  border: none;
+  background-color: #0e64f1;
+  color: #fff;
+  padding: 8px 12px;
+  border-radius: 8px;
+  transition: all 0.3s;
+}
+
+.user button:hover {
+  background-color: #DD5746;
+}
+
+.user button:active {
+  transform: scale(0.98);
+}
+
+.wrapper {
+  width: 850px;
+  height: 500px;
+  background-color: #eff1f2;
+  border-radius: 16px;
+  padding: 30px;
+  overflow: hidden;
+  display: grid;
+  grid-template-rows: 2fr 3fr;
+}
+
+.wrapper header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.wrapper header h1 {
+  font-size: 42px;
+  font-weight: 700;
+  color: #0e64f1;
+}
+
+.wrapper main {
+  margin-top: 12px;
+  width: 100%;
+  height: 100%;
+  overflow-y: overlay;
+}
+
+.wrapper main .no-task {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.wrapper main .no-task img {
+  width: 40%;
+}
